@@ -1,0 +1,53 @@
+<script type="text/javascript">
+    RED.nodes.registerType('rate-limiter',{
+        category: 'function',
+        color: '#E6E0F8',
+        defaults: {
+          name: {value:""},
+          interval: {value:"", validate:RED.validators.number(), required: true},
+          units: {value:"s"},
+          perTopic: {value:true},
+        },
+        inputs:1,
+        outputs:1,
+        icon: "function.png",
+        label: function() {
+          if (this.interval > 0) {
+            return this.name || "rate-limiter "+this.interval+this.units;
+          } else {
+            return this.name || "rate-limiter";
+          }
+        },
+        labelStyle: function() {
+            return "node_label_italic";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="rate-limiter">
+    <div class="form-row">
+        <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
+        <input type="text" id="node-input-interval" style="text-align:end; width:70px !important">
+        <select id="node-input-units" style="width:140px !important">
+            <option value="ms">ms</option>
+            <option value="s">s</option>
+            <option value="min">min</option>
+            <option value="hr">hr</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-perTopic"><i class="icon-tag"></i> Limit per topic</label>
+        <input type="checkbox" id="node-input-perTopic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="rate-limiter">
+    <p>A node that rate limits messages, letting the first one always pass.
+    Can be configured to act per topic or to ignore topics.
+    The built-in delay node has this functionality but is currently not working
+    as it should.</p>
+</script>

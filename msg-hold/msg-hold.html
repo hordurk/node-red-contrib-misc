@@ -1,0 +1,66 @@
+<script type="text/javascript">
+    RED.nodes.registerType('msg-hold',{
+        category: 'function',
+        color: '#E6E0F8',
+        defaults: {
+          name: {value:""},
+          //interval: {value:"", validate:RED.validators.number(), required: true},
+          op1: {value:"", validate: RED.validators.typedInput("op1type"), required: true},
+          op1type: {value:"val"},
+          units: {value:"s"},
+          policy: {value:"first", required: true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "function.png",
+        label: function() {
+          return this.name || "msg-hold";
+        },
+        labelStyle: function() {
+            return "node_label_italic";
+        },
+        oneditprepare: function() {
+          if (this.op1type === 'val') {
+               $("#node-input-op1type").val('str');
+           }
+           $("#node-input-op1").typedInput({
+               default: 'num',
+               typeField: $("#node-input-op1type"),
+               types:['flow','global','num']
+           });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="msg-hold">
+    <div class="form-row">
+        <label for="node-input-op1"><i class="icon-tag"></i> Interval</label>
+        <input type="hidden" id="node-input-op1type">
+        <input style="width: 70%" type="text" id="node-input-op1">
+    </div>
+    <div class="form-row">
+        <label for="node-input-units"><i class="icon-tag"></i> Time unit</label>
+        <select id="node-input-units" style="width:140px !important">
+            <option value="ms">ms</option>
+            <option value="s">s</option>
+            <option value="min">min</option>
+            <option value="hr">hr</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-policy"><i class="icon-tag"></i> Policy</label>
+        <select id="node-input-policy" style="width:140px !important">
+            <option value="first">first</option>
+            <option value="latest">latest</option>
+            <option value="reset">reset</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="msg-hold">
+    <p></p>
+</script>
