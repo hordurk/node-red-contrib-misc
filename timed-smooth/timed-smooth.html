@@ -1,0 +1,77 @@
+<script type="text/javascript">
+    RED.nodes.registerType('timed-smooth',{
+        category: 'function',
+        color: '#E6E0F8',
+        defaults: {
+          name: {value:""},
+          //interval: {value:"", validate:RED.validators.number(), required: true},
+          op1: {value:"", validate: RED.validators.typedInput("op1type"), required: true},
+          op1type: {value:"val"},
+          units: {value:"s"},
+          action: {value:"mean", required: true},
+          perTopic: {value:false}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "function.png",
+        label: function() {
+          return this.name || "timed-smooth";
+        },
+        labelStyle: function() {
+            return "node_label_italic";
+        },
+        oneditprepare: function() {
+          if (this.op1type === 'val') {
+               $("#node-input-op1type").val('str');
+           }
+           $("#node-input-op1").typedInput({
+               default: 'num',
+               typeField: $("#node-input-op1type"),
+               types:['flow','global','num']
+           });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="timed-smooth">
+    <div class="form-row">
+        <label for="node-input-op1"><i class="icon-tag"></i> Interval</label>
+        <input type="hidden" id="node-input-op1type">
+        <input style="width: 70%" type="text" id="node-input-op1">
+    </div>
+    <div class="form-row">
+        <label for="node-input-units"><i class="icon-tag"></i> Time unit</label>
+        <select id="node-input-units" style="width:140px !important">
+            <option value="ms">ms</option>
+            <option value="s">s</option>
+            <option value="min">min</option>
+            <option value="hr">hr</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="icon-tag"></i> Action</label>
+        <select id="node-input-action">
+            <option value="mean">Mean</option>
+            <option value="max">Maximum</option>
+            <option value="min">Minimum</option>
+            <option value="median">Median</option>
+            <option value="stddev">Standard deviation</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-perTopic"><i class="icon-tag"></i> Process per topic</label>
+        <input type="checkbox" id="node-input-perTopic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="timed-smooth">
+    <p>This node smoothes out the payload from messages. Instead of configuring the number
+    of samples to smooth over you can configure a time period over which all messages received
+    are stored and smoothed. The node only outputs on input. Future improvement may include a
+    regularly timed output instead. The mean, stddev and median are all calculated based on the
+    number of samples stored at any time.</p>
+</script>

@@ -8,7 +8,8 @@
     "node-red"     : {
         "nodes": {
             "rate-limiter": "rate-limiter/rate-limiter.js",
-            "msg-hold": "msg-hold/msg-hold.js"
+            "msg-hold": "msg-hold/msg-hold.js",
+            "timed-smooth": "timed-smooth/timed-smooth.js"
         }
     }
 }
